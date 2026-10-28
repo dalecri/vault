@@ -43,7 +43,7 @@
     margin: 44px 0 30px; white-space: nowrap; overflow: hidden; user-select: none;
   }
   nav {
-    display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 18px;
   }
   nav a {
     font-family: 'Alpha Lyrae', 'Space Mono', monospace;
@@ -152,7 +152,7 @@
     position: fixed; inset: 0; width: 100%; height: 100%;
     z-index: 0; opacity: .5; pointer-events: none;
   }
-  .searchbar { margin-top: 26px; display: flex; justify-content: center; }
+  .searchbar { display: flex; justify-content: center; }
   .search-wrap { position: relative; width: min(420px, 100%); }
   #vaultSearch {
     width: 100%; padding: 12px 42px 12px 20px; border-radius: 999px;
@@ -184,6 +184,13 @@
 
   <div class="wave" id="waveDiv" aria-hidden="true">..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........</div>
 
+<div class="searchbar">
+    <div class="search-wrap">
+      <input id="vaultSearch" type="search" placeholder="Search" autocomplete="off" aria-label="Search the vault">
+      <button id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
+    </div>
+  </div>
+
   <nav>
     <a href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/">ASCII Projects</a>
     <a href="https://heycristobal.com/landing-templates/">Landing Templates</a>
@@ -191,12 +198,6 @@
     <a href="https://heycristobal.com/my-style-guide/">Style Guide</a>
   </nav>
 
-  <div class="searchbar">
-    <div class="search-wrap">
-      <input id="vaultSearch" type="search" placeholder="Search" autocomplete="off" aria-label="Search the vault">
-      <button id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
-    </div>
-  </div>
 
   <details class="section" open>
     <summary><span>Projects — ASCII Visual Projects</span><span class="chev">&#9662;</span></summary>
