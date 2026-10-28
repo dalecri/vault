@@ -53,6 +53,37 @@
     transition: border-color .15s ease, color .15s ease, transform .15s ease;
   }
   nav a:hover { border-color: #E8873A; color: #EDE7F2; transform: translateY(-1px); }
+  .sec-label {
+    margin: 56px 0 18px; font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #9B8FA8; text-align: left;
+  }
+  .grid {
+    display: grid; gap: 14px; text-align: left;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  a.pcard {
+    display: block; background: #241B31; border: 1px solid #3A3247;
+    border-radius: 16px; overflow: hidden; color: #EDE7F2; text-decoration: none;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  a.pcard:hover { border-color: #E8873A; transform: translateY(-2px); }
+  .pcard .art {
+    background: #1E1826; padding: 20px 16px 16px; text-align: center;
+    font-size: 17px; line-height: 1.45; white-space: pre; user-select: none;
+    border-bottom: 1px solid #3A3247;
+  }
+  .pcard .body { padding: 14px 16px 16px; }
+  .pcard .name { font-size: 15px; font-weight: 700; }
+  .pcard .meta {
+    margin-top: 6px; font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #9B8FA8;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .pcard .go { color: #E8873A; letter-spacing: 0; font-size: 13px; }
+  .c-emergent { color: #A8CCB3; }
+  .c-math { color: #7FB8D9; }
+  .c-ambient { color: #B9A7DD; }
+  .c-toys { color: #E8873A; }
   footer { color: #5C5170; font-size: 12px; margin-top: 48px; }
 </style>
 </head>
@@ -66,7 +97,7 @@
 
   <p class="sub">Design and prompts, kept for quick preview and copy. Everything here is one click from being used.</p>
 
-  <div class="stats"><b>2</b> Quick links<span class="sep">&middot;</span><b>1</b> Hub<span class="sep">&middot;</span><b>0</b> Friction</div>
+  <div class="stats"><b>2</b> Homes<span class="sep">&middot;</span><b>16</b> Projects<span class="sep">&middot;</span><b>1</b> Vault</div>
 
   <div class="wave" aria-hidden="true">..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........</div>
 
@@ -74,6 +105,108 @@
     <a href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/">ASCII Projects</a>
     <a href="https://heycristobal.com/landing-templates/">Landing Templates</a>
   </nav>
+
+  <div class="sec-label">Projects — ASCII Visual Projects</div>
+  <div class="grid">
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/reaction-diffusion-garden.html">
+      <div class="art c-emergent">.oO0Oo.
+o0O0Oo0</div>
+      <div class="body"><div class="name">Reaction-Diffusion Garden</div>
+      <div class="meta"><span>Emergent Systems</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/murmuration.html">
+      <div class="art c-emergent">^ ^  ^ ^
+ ^  ^   ^</div>
+      <div class="body"><div class="name">Murmuration</div>
+      <div class="meta"><span>Emergent Systems</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii-terrain-flyover.html">
+      <div class="art c-math">  /\    /\
+ /  \/\/  \</div>
+      <div class="body"><div class="name">ASCII Terrain Flyover</div>
+      <div class="meta"><span>Math Made Visible</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/wave-interference-table.html">
+      <div class="art c-math">~~~~~~~~
+≈≈≈≈≈≈≈≈</div>
+      <div class="body"><div class="name">Wave Interference Table</div>
+      <div class="meta"><span>Math Made Visible</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/kaleidoscope-loom.html">
+      <div class="art c-math">&lt;&gt;*&lt;&gt;
+*&lt;&gt;*&lt;&gt;</div>
+      <div class="body"><div class="name">Kaleidoscope Loom</div>
+      <div class="meta"><span>Math Made Visible</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii-aurora.html">
+      <div class="art c-ambient">~ ≈ ~ ≈ ~
+ ≈ ~ ≈ ~</div>
+      <div class="body"><div class="name">ASCII Aurora</div>
+      <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/seasonal-tree.html">
+      <div class="art c-ambient">   *
+  ***
+   |</div>
+      <div class="body"><div class="name">Seasonal Tree</div>
+      <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/rain-on-glass.html">
+      <div class="art c-ambient">' ' ' '
+ ' ' ' '</div>
+      <div class="body"><div class="name">Rain on Glass</div>
+      <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/life_clock.html">
+      <div class="art c-ambient">11:59
+23:59</div>
+      <div class="body"><div class="name">Life Clock</div>
+      <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/weather_pond.html">
+      <div class="art c-ambient">~  &gt;&lt;  ~
+  ~   ~</div>
+      <div class="body"><div class="name">Weather Pond</div>
+      <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii_koi_pond.html">
+      <div class="art c-toys">&gt;&lt;   ~
+  ~   &gt;&lt;</div>
+      <div class="body"><div class="name">ASCII Koi Pond</div>
+      <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/interactive_ascii_botanical_koi_portfolio.html">
+      <div class="art c-toys">*  &gt;&lt;  *
+  ~~~~</div>
+      <div class="body"><div class="name">Botanical Koi Portfolio</div>
+      <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/cozy_game_of_life.html">
+      <div class="art c-toys">.#.
+..#
+###</div>
+      <div class="body"><div class="name">Cozy Game of Life</div>
+      <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ocean-in-a-bottle.html">
+      <div class="art c-toys">~~~~~~
+≈≈≈≈≈≈</div>
+      <div class="body"><div class="name">Ocean in a Bottle</div>
+      <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii_photo_booth.html">
+      <div class="art c-toys">( @ )
+[___]</div>
+      <div class="body"><div class="name">ASCII Photo Booth</div>
+      <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
+    </a>
+    <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii_spinner.html">
+      <div class="art c-toys"> @@@
+@   @</div>
+      <div class="body"><div class="name">ASCII Spinner</div>
+      <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
+    </a>
+  </div>
 
   <footer>More sections land here as they are built.</footer>
 </main>
