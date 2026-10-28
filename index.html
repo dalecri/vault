@@ -146,6 +146,21 @@
     background: #1E1826; border: 1px solid #3A3247; border-radius: 12px;
     padding: 10px 12px; margin-bottom: 10px;
   }
+  .motif .w { display: inline-block; animation: shimmer 2.8s ease-in-out infinite alternate; }
+  .motif .f { display: inline-block; animation: swim 5s ease-in-out infinite; }
+  .motif .f.f2 { animation-duration: 6.5s; animation-delay: -2.2s; }
+  .motif .s { display: inline-block; animation: twinkle 2.4s ease-in-out infinite alternate; }
+  @keyframes shimmer { from { opacity: .65; transform: translateY(0); } to { opacity: 1; transform: translateY(1px); } }
+  @keyframes swim {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(-5px, -1px); }
+    50% { transform: translate(-11px, 0); }
+    75% { transform: translate(-5px, 1px); }
+  }
+  @keyframes twinkle { from { opacity: .55; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .motif .w, .motif .f, .motif .s { animation: none; }
+  }
   footer { color: #5C5170; font-size: 12px; margin-top: 48px; }
 </style>
 </head>
@@ -153,7 +168,7 @@
 <main>
   <div class="motif" aria-hidden="true"><span class="w">~   ~    ~</span>        <span class="s">\|/  \|/</span>
 <span class="w">~</span>       <span class="f">&gt;&lt;</span>        <span class="w">~</span>    <span class="s">--*--</span>
-   <span class="w">~   ~</span>    <span class="f">&gt;&lt;</span>         <span class="s">/|\  /|\</span>   <span class="w">~</span></div>
+   <span class="w">~   ~</span>    <span class="f f2">&gt;&lt;</span>         <span class="s">/|\  /|\</span>   <span class="w">~</span></div>
 
   <h1>Vault<span class="dot">.</span></h1>
 
@@ -161,7 +176,7 @@
 
   <div class="stats"><b>4</b> Homes<span class="sep">&middot;</span><b>43</b> Projects<span class="sep">&middot;</span><b>5</b> Prompts</div>
 
-  <div class="wave" aria-hidden="true">..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........</div>
+  <div class="wave" id="waveDiv" aria-hidden="true">..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........</div>
 
   <nav>
     <a href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/">ASCII Projects</a>
@@ -546,6 +561,28 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
     }
   });
 });
+</script>
+
+<script>
+(function () {
+  var el = document.getElementById('waveDiv');
+  if (!el) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var pattern = '..........~~~~~~~~';
+  var base = '';
+  while (base.length < 140) { base += pattern; }
+  var i = 0;
+  function tick() {
+    el.textContent = base.slice(i) + base.slice(0, i);
+    i = (i + 1) % pattern.length;
+  }
+  tick();
+  var timer = setInterval(tick, 140);
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { clearInterval(timer); timer = null; }
+    else if (!timer) { timer = setInterval(tick, 140); }
+  });
+})();
 </script>
 </body>
 </html>
