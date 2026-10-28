@@ -22,13 +22,6 @@
     display: flex; flex-direction: column; align-items: center;
   }
   main { width: 100%; max-width: 880px; text-align: center; position: relative; z-index: 1; }
-  .motif {
-    font-size: 15px; line-height: 1.5; white-space: pre;
-    margin-bottom: 28px; user-select: none;
-  }
-  .motif .w { color: #7FB8D9; }
-  .motif .f { color: #E8873A; }
-  .motif .s { color: #A8CCB3; }
   h1 {
     font-family: 'Alpha Lyrae', 'Space Mono', monospace;
     font-size: clamp(48px, 10vw, 88px); font-weight: 700;
@@ -155,21 +148,6 @@
     background: #1E1826; border: 1px solid #3A3247; border-radius: 12px;
     padding: 10px 12px; margin-bottom: 10px;
   }
-  .motif .w { display: inline-block; animation: shimmer 2.8s ease-in-out infinite alternate; }
-  .motif .f { display: inline-block; animation: swim 5s ease-in-out infinite; }
-  .motif .f.f2 { animation-duration: 6.5s; animation-delay: -2.2s; }
-  .motif .s { display: inline-block; animation: twinkle 2.4s ease-in-out infinite alternate; }
-  @keyframes shimmer { from { opacity: .65; transform: translateY(0); } to { opacity: 1; transform: translateY(1px); } }
-  @keyframes swim {
-    0%, 100% { transform: translate(0, 0); }
-    25% { transform: translate(-5px, -1px); }
-    50% { transform: translate(-11px, 0); }
-    75% { transform: translate(-5px, 1px); }
-  }
-  @keyframes twinkle { from { opacity: .55; } to { opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) {
-    .motif .w, .motif .f, .motif .s { animation: none; }
-  }
   #auroraBg {
     position: fixed; inset: 0; width: 100%; height: 100%;
     z-index: 0; opacity: .5; pointer-events: none;
@@ -198,10 +176,6 @@
 <body>
 <canvas id="auroraBg" aria-hidden="true"></canvas>
 <main>
-  <div class="motif" aria-hidden="true"><span class="w">~   ~    ~</span>        <span class="s">\|/  \|/</span>
-<span class="w">~</span>       <span class="f">&gt;&lt;</span>        <span class="w">~</span>    <span class="s">--*--</span>
-   <span class="w">~   ~</span>    <span class="f f2">&gt;&lt;</span>         <span class="s">/|\  /|\</span>   <span class="w">~</span></div>
-
   <h1>Vault<span class="dot">.</span></h1>
 
   <p class="sub">Design and prompts, kept for quick preview and copy. Everything here is one click from being used.</p>
