@@ -190,11 +190,12 @@
   .sky-dot {
     width: 16px; height: 16px; border-radius: 999px; padding: 0; cursor: pointer;
     border: 1px solid rgba(255, 255, 255, .25); background: var(--dot);
-    opacity: .5; transition: opacity .2s ease, transform .2s ease, box-shadow .2s ease;
+    opacity: .32; filter: saturate(.3); transform: scale(.92);
+    transition: opacity .2s ease, transform .2s ease, box-shadow .2s ease, filter .2s ease;
   }
-  .sky-dot:hover { opacity: .9; }
+  .sky-dot:hover { opacity: .85; filter: saturate(.8); }
   .sky-dot[aria-pressed="true"] {
-    opacity: 1; transform: scale(1.15);
+    opacity: 1; filter: none; transform: scale(1.15);
     box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--dot);
   }
   footer { color: var(--faint); font-size: 12px; margin-top: 48px; }
