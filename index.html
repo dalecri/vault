@@ -8,6 +8,22 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
 <style>
+  :root {
+    --bg: var(--bg); --panel: var(--panel); --panel2: var(--panel2); --line: var(--line);
+    --text: var(--text); --muted: var(--muted); --faint: var(--faint); --chip: var(--chip);
+    --accent: var(--accent); --accent2: var(--accent2); --wave: var(--wave); --soft: var(--soft);
+  }
+  :root[data-sky="classic"] {
+    --bg: #05070F; --panel: #0B1210; --panel2: #070D0B; --line: #1E3329;
+    --text: #E4F2E7; --muted: #8FAE97; --faint: #4A6353; --chip: #A9C6B0;
+    --accent: #3CE882; --accent2: #B8FFD9; --wave: #3CE882; --soft: #C4DCC9;
+  }
+  :root[data-sky="blood"] {
+    --bg: #0B0406; --panel: #1C0A0E; --panel2: #14060A; --line: #3D1A20;
+    --text: #F5E9E4; --muted: #B08D90; --faint: #6B4A4E; --chip: #CBA3A0;
+    --accent: #E8432E; --accent2: #FFC98A; --wave: #E8432E; --soft: #E3C8C4;
+  }
+
   @font-face {
     font-family: 'Alpha Lyrae';
     src: url('assets/fonts/AlphaLyrae-Medium.woff2') format('woff2'),
@@ -16,9 +32,9 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    background: #171221; color: #EDE7F2;
+    background: var(--bg); color: var(--text);
     font-family: "Space Mono", ui-monospace, Menlo, monospace;
-    min-height: 100vh; padding: 56px 20px 96px;
+    min-height: 100vh; padding: 56px 20px 48px;
     display: flex; flex-direction: column; align-items: center;
   }
   main { width: 100%; max-width: 880px; text-align: center; position: relative; z-index: 1; }
@@ -27,19 +43,19 @@
     font-size: clamp(48px, 10vw, 88px); font-weight: 700;
     letter-spacing: -0.01em; line-height: 1.05;
   }
-  h1 .dot { color: #E8873A; }
+  h1 .dot { color: var(--accent); }
   .sub {
-    color: #9B8FA8; font-size: clamp(15px, 2.2vw, 19px);
+    color: var(--muted); font-size: clamp(15px, 2.2vw, 19px);
     line-height: 1.7; max-width: 52ch; margin: 26px auto 0;
   }
   .stats {
     margin-top: 30px; font-size: 14px; letter-spacing: 0.22em;
-    text-transform: uppercase; color: #9B8FA8;
+    text-transform: uppercase; color: var(--muted);
   }
-  .stats b { color: #F2C94C; font-weight: 700; }
-  .stats .sep { margin: 0 14px; color: #5C5170; }
+  .stats b { color: var(--accent2); font-weight: 700; }
+  .stats .sep { margin: 0 14px; color: var(--faint); }
   .wave {
-    color: #7FB8D9; opacity: .55; font-size: 15px; letter-spacing: .1em;
+    color: var(--wave); opacity: .55; font-size: 15px; letter-spacing: .1em;
     margin: 44px 0 30px; white-space: nowrap; overflow: hidden; user-select: none;
   }
   nav {
@@ -48,44 +64,44 @@
   nav a {
     font-family: 'Alpha Lyrae', 'Space Mono', monospace;
     display: inline-block; padding: 13px 26px; border-radius: 999px;
-    border: 1px solid #3A3247; background: #241B31;
-    color: #B7AACE; text-decoration: none;
+    border: 1px solid var(--line); background: var(--panel);
+    color: var(--chip); text-decoration: none;
     font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase;
     transition: border-color .15s ease, color .15s ease, transform .15s ease;
   }
-  nav a:hover { border-color: #E8873A; color: #EDE7F2; transform: translateY(-1px); }
+  nav a:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
   .sec-label {
     margin: 56px 0 18px; font-size: 12px; letter-spacing: 0.22em;
-    text-transform: uppercase; color: #9B8FA8; text-align: left;
+    text-transform: uppercase; color: var(--muted); text-align: left;
   }
   .grid {
     display: grid; gap: 14px; text-align: left;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
   a.pcard {
-    display: block; background: #241B31; border: 1px solid #3A3247;
-    border-radius: 16px; overflow: hidden; color: #EDE7F2; text-decoration: none;
+    display: block; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 16px; overflow: hidden; color: var(--text); text-decoration: none;
     transition: border-color .15s ease, transform .15s ease;
   }
-  a.pcard:hover { border-color: #E8873A; transform: translateY(-2px); }
+  a.pcard:hover { border-color: var(--accent); transform: translateY(-2px); }
   .pcard .art {
-    background: #1E1826; padding: 20px 16px 16px; text-align: center;
+    background: var(--panel2); padding: 20px 16px 16px; text-align: center;
     font-size: 17px; line-height: 1.45; white-space: pre; user-select: none;
-    border-bottom: 1px solid #3A3247;
+    border-bottom: 1px solid var(--line);
   }
   .pcard .body { padding: 14px 16px 16px; }
   .pcard .name { font-family: 'Alpha Lyrae', 'Space Mono', monospace; font-size: 15px; font-weight: 700; }
   .pcard .meta {
     margin-top: 6px; font-size: 11px; letter-spacing: 0.14em;
-    text-transform: uppercase; color: #9B8FA8;
+    text-transform: uppercase; color: var(--muted);
     display: flex; justify-content: space-between; align-items: center;
   }
-  .pcard .go { color: #E8873A; letter-spacing: 0; font-size: 13px; }
+  .pcard .go { color: var(--accent); letter-spacing: 0; font-size: 13px; }
   .c-emergent { color: #A8CCB3; }
-  .c-math { color: #7FB8D9; }
+  .c-math { color: var(--wave); }
   .c-ambient { color: #B9A7DD; }
-  .c-toys { color: #E8873A; }
-  .c-apps { color: #F2C94C; }
+  .c-toys { color: var(--accent); }
+  .c-apps { color: var(--accent2); }
   .c-pink { color: #E85C8A; }
   details.section { text-align: left; margin-top: 56px; }
   details.section > summary {
@@ -93,14 +109,14 @@
     list-style: none; cursor: pointer; display: flex;
     justify-content: space-between; align-items: center;
     font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: #9B8FA8; margin-bottom: 18px; user-select: none;
+    color: var(--muted); margin-bottom: 18px; user-select: none;
   }
   details.section > summary::-webkit-details-marker { display: none; }
-  details.section > summary .chev { transition: transform .15s ease; color: #E8873A; }
+  details.section > summary .chev { transition: transform .15s ease; color: var(--accent); }
   details.section:not([open]) > summary .chev { transform: rotate(-90deg); }
   details.section:not([open]) > summary { margin-bottom: 0; }
   .prompt {
-    background: #241B31; border: 1px solid #3A3247; border-radius: 16px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
     padding: 10px 12px; margin-bottom: 10px;
   }
   .prompt-head {
@@ -109,14 +125,14 @@
   .prompt-name { font-size: 13px; font-weight: 700; }
   .copy {
     font-family: inherit; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-    background: none; border: 1px solid #3A3247; border-radius: 999px;
-    color: #B7AACE; padding: 6px 16px; cursor: pointer;
+    background: none; border: 1px solid var(--line); border-radius: 999px;
+    color: var(--chip); padding: 6px 16px; cursor: pointer;
     transition: border-color .15s ease, color .15s ease;
   }
-  .copy:hover { border-color: #E8873A; color: #EDE7F2; }
+  .copy:hover { border-color: var(--accent); color: var(--text); }
   .prompt pre {
     white-space: pre-wrap; word-break: break-word;
-    font-size: 12.5px; line-height: 1.65; color: #C9BCDD;
+    font-size: 12.5px; line-height: 1.65; color: var(--soft);
     max-height: 120px; overflow: auto;
   }
   .pgrid {
@@ -124,7 +140,7 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
   .prompt-card {
-    background: #241B31; border: 1px solid #3A3247; border-radius: 16px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
     padding: 14px 12px; height: 100%;
     display: flex; flex-direction: column; align-items: center; text-align: center;
   }
@@ -135,7 +151,7 @@
   .prompt-card .p-name { font-family: 'Alpha Lyrae', 'Space Mono', monospace; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
   .prompt-card .copy { width: 100%; }
   .prompt-card .p-desc {
-    font-size: 11px; line-height: 1.55; color: #9B8FA8; margin-bottom: 10px;
+    font-size: 11px; line-height: 1.55; color: var(--muted); margin-bottom: 10px;
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
     overflow: hidden; min-height: 51px;
   }
@@ -143,9 +159,9 @@
   .prompt-card .p-actions .copy { flex: 1; width: auto; }
   .prompt-card .p-full {
     width: 100%; text-align: left; white-space: pre-wrap; word-break: break-word;
-    font-size: 11.5px; line-height: 1.6; color: #C9BCDD;
+    font-size: 11.5px; line-height: 1.6; color: var(--soft);
     max-height: 280px; overflow: auto;
-    background: #1E1826; border: 1px solid #3A3247; border-radius: 12px;
+    background: var(--panel2); border: 1px solid var(--line); border-radius: 12px;
     padding: 10px 12px; margin-bottom: 10px;
   }
   #auroraBg {
@@ -156,43 +172,40 @@
   .search-wrap { position: relative; width: min(420px, 100%); }
   #vaultSearch {
     width: 100%; padding: 12px 42px 12px 20px; border-radius: 999px;
-    border: 1px solid #3A3247; background: #241B31; color: #EDE7F2;
+    border: 1px solid var(--line); background: var(--panel); color: var(--text);
     font-family: "Space Mono", ui-monospace, Menlo, monospace; font-size: 14px;
     outline: none; transition: border-color .15s ease;
   }
-  #vaultSearch::placeholder { color: #9B8FA8; }
-  #vaultSearch:focus { border-color: #E8873A; }
+  #vaultSearch::placeholder { color: var(--muted); }
+  #vaultSearch:focus { border-color: var(--accent); }
   #vaultSearch::-webkit-search-cancel-button { display: none; }
   #searchClear {
     position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-    width: 28px; height: 28px; border-radius: 999px; border: 1px solid #3A3247;
-    background: none; color: #B7AACE; font-size: 16px; line-height: 1; cursor: pointer;
+    width: 28px; height: 28px; border-radius: 999px; border: 1px solid var(--line);
+    background: none; color: var(--chip); font-size: 16px; line-height: 1; cursor: pointer;
   }
-  #searchClear:hover { border-color: #E8873A; color: #EDE7F2; }
-  .no-results { color: #9B8FA8; font-size: 14px; margin-top: 40px; }
-  .themebar {
-    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
-    z-index: 5; display: flex; gap: 2px; padding: 6px;
-    background: rgba(23, 18, 33, .72); border: 1px solid #3A3247; border-radius: 999px;
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  #searchClear:hover { border-color: var(--accent); color: var(--text); }
+  .no-results { color: var(--muted); font-size: 14px; margin-top: 40px; }
+  .skybtns { position: fixed; top: 14px; right: 14px; z-index: 6; display: flex; gap: 8px; }
+  .sky-dot {
+    width: 16px; height: 16px; border-radius: 999px; padding: 0; cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, .25); background: var(--dot);
+    opacity: .5; transition: opacity .2s ease, transform .2s ease, box-shadow .2s ease;
   }
-  .themebar button {
-    font-family: "Space Mono", ui-monospace, Menlo, monospace; font-size: 12px;
-    color: #9B8FA8; background: transparent; border: 0; border-radius: 999px;
-    padding: 7px 14px; cursor: pointer; transition: color .2s, background .2s;
-    white-space: nowrap;
+  .sky-dot:hover { opacity: .9; }
+  .sky-dot[aria-pressed="true"] {
+    opacity: 1; transform: scale(1.15);
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--dot);
   }
-  .themebar button:hover { color: #EDE7F2; }
-  .themebar button[aria-pressed="true"] { background: #E8873A; color: #170C03; }
-  footer { color: #5C5170; font-size: 12px; margin-top: 48px; }
+  footer { color: var(--faint); font-size: 12px; margin-top: 48px; }
 </style>
 </head>
 <body>
 <canvas id="auroraBg" aria-hidden="true"></canvas>
-<div class="themebar" role="group" aria-label="Sky theme">
-  <button type="button" data-sky="violet" aria-pressed="true">Violet Storm</button>
-  <button type="button" data-sky="classic" aria-pressed="false">Classic</button>
-  <button type="button" data-sky="blood" aria-pressed="false">Blood Sky</button>
+<div class="skybtns" role="group" aria-label="Sky theme">
+  <button type="button" class="sky-dot" data-sky="violet" style="--dot:#A24DFF" aria-pressed="true" title="Violet Storm" aria-label="Violet Storm"></button>
+  <button type="button" class="sky-dot" data-sky="classic" style="--dot:#3CE882" aria-pressed="false" title="Classic" aria-label="Classic"></button>
+  <button type="button" class="sky-dot" data-sky="blood" style="--dot:#E8432E" aria-pressed="false" title="Blood Sky" aria-label="Blood Sky"></button>
 </div>
 <main>
   <h1>Vault<span class="dot">.</span></h1>
@@ -821,7 +834,7 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
   buildColors();
   resize();
 
-  function applyBody() { document.body.style.background = skyCss; }
+  function applyBody() { document.documentElement.setAttribute('data-sky', skyName); }
   applyBody();
   window.VaultSky = {
     current: function () { return skyName; },
