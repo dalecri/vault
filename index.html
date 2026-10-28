@@ -174,6 +174,24 @@
     position: fixed; inset: 0; width: 100%; height: 100%;
     z-index: 0; opacity: .5; pointer-events: none;
   }
+  .searchbar { margin-top: 26px; display: flex; justify-content: center; }
+  .search-wrap { position: relative; width: min(420px, 100%); }
+  #vaultSearch {
+    width: 100%; padding: 12px 42px 12px 20px; border-radius: 999px;
+    border: 1px solid #3A3247; background: #241B31; color: #EDE7F2;
+    font-family: "Space Mono", ui-monospace, Menlo, monospace; font-size: 14px;
+    outline: none; transition: border-color .15s ease;
+  }
+  #vaultSearch::placeholder { color: #9B8FA8; }
+  #vaultSearch:focus { border-color: #E8873A; }
+  #vaultSearch::-webkit-search-cancel-button { display: none; }
+  #searchClear {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    width: 28px; height: 28px; border-radius: 999px; border: 1px solid #3A3247;
+    background: none; color: #B7AACE; font-size: 16px; line-height: 1; cursor: pointer;
+  }
+  #searchClear:hover { border-color: #E8873A; color: #EDE7F2; }
+  .no-results { color: #9B8FA8; font-size: 14px; margin-top: 40px; }
   footer { color: #5C5170; font-size: 12px; margin-top: 48px; }
 </style>
 </head>
@@ -198,6 +216,13 @@
     <a href="https://heycristobal.com/my-collection/">My Collection</a>
     <a href="https://heycristobal.com/my-style-guide/">Style Guide</a>
   </nav>
+
+  <div class="searchbar">
+    <div class="search-wrap">
+      <input id="vaultSearch" type="search" placeholder="Search" autocomplete="off" aria-label="Search the vault">
+      <button id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
+    </div>
+  </div>
 
   <details class="section" open>
     <summary><span>Projects — ASCII Visual Projects</span><span class="chev">&#9662;</span></summary>
@@ -539,6 +564,7 @@ o0O0Oo0</div>
       </div>
     </div>
   </details>
+  <p id="noResults" class="no-results" hidden>No matches.</p>
   <footer>More sections land here as they are built.</footer>
 </main>
 <script>
@@ -824,5 +850,62 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
 })();
 </script>
 
+
+<script>
+(function () {
+  var input = document.getElementById('vaultSearch');
+  var clearBtn = document.getElementById('searchClear');
+  var noResults = document.getElementById('noResults');
+  if (!input) return;
+  var nav = document.querySelector('nav');
+  var pills = Array.prototype.slice.call(nav.querySelectorAll('a'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('details.section'));
+
+  function cardText(card) {
+    var t = card.textContent.toLowerCase();
+    var key = card.querySelector('[data-copykey]');
+    if (key && typeof PROMPTS !== 'undefined') {
+      t += ' ' + (PROMPTS[key.getAttribute('data-copykey')] || '').toLowerCase();
+    }
+    return t;
+  }
+
+  function apply() {
+    var q = input.value.trim().toLowerCase();
+    clearBtn.hidden = !q;
+    var anyVisible = false;
+
+    pills.forEach(function (p) {
+      var show = !q || p.textContent.toLowerCase().indexOf(q) !== -1;
+      p.style.display = show ? '' : 'none';
+      if (show) anyVisible = true;
+    });
+    nav.style.display = pills.some(function (p) { return p.style.display !== 'none'; }) ? '' : 'none';
+
+    sections.forEach(function (sec) {
+      var cards = sec.querySelectorAll('a.pcard, .prompt-card');
+      var visible = 0;
+      cards.forEach(function (card) {
+        var show = !q || cardText(card).indexOf(q) !== -1;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      sec.style.display = visible ? '' : 'none';
+      if (q && visible) { sec.open = true; anyVisible = true; }
+      if (!q) anyVisible = true;
+    });
+
+    noResults.hidden = !(q && !anyVisible);
+  }
+
+  input.addEventListener('input', apply);
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { input.value = ''; apply(); }
+  });
+  clearBtn.addEventListener('click', function () {
+    input.value = ''; apply(); input.focus();
+  });
+})();
+</script>
 </body>
 </html>
