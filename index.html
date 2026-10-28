@@ -21,7 +21,7 @@
     min-height: 100vh; padding: 56px 20px 48px;
     display: flex; flex-direction: column; align-items: center;
   }
-  main { width: 100%; max-width: 880px; text-align: center; }
+  main { width: 100%; max-width: 880px; text-align: center; position: relative; z-index: 1; }
   .motif {
     font-size: 15px; line-height: 1.5; white-space: pre;
     margin-bottom: 28px; user-select: none;
@@ -170,10 +170,15 @@
   @media (prefers-reduced-motion: reduce) {
     .motif .w, .motif .f, .motif .s { animation: none; }
   }
+  #auroraBg {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    z-index: 0; opacity: .5; pointer-events: none;
+  }
   footer { color: #5C5170; font-size: 12px; margin-top: 48px; }
 </style>
 </head>
 <body>
+<canvas id="auroraBg" aria-hidden="true"></canvas>
 <main>
   <div class="motif" aria-hidden="true"><span class="w">~   ~    ~</span>        <span class="s">\|/  \|/</span>
 <span class="w">~</span>       <span class="f">&gt;&lt;</span>        <span class="w">~</span>    <span class="s">--*--</span>
@@ -599,5 +604,225 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
   });
 })();
 </script>
+<script>
+// ASCII Aurora "Violet Storm" backdrop, adapted from Cris's ASCII-Aurora piece.
+(function () {
+  var canvas = document.getElementById('auroraBg');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d', { alpha: false });
+  var CW = 11, CH = 16;
+  var FONT = '13px "Space Mono", ui-monospace, Menlo, Consolas, monospace';
+  var GLYPHS = ' .\u00B7:;+*#';
+  var BG = [23, 18, 33]; // vault plum #171221
+  var STAR_COLOR = '#CFE0FF';
+  var LV = 24, EV = 4, NB = LV * EV;
+  var PAL = { low: '#2E1060', mid: '#A24DFF', high: '#F4D2FF', edge: '#FF4FC8' };
+  var STORM = 1.5;
+  var layers = [
+    { base: .10, depth: .58, f1: .021, f2: .083, speed:  .045, inten: 1.00, seed: 11.3, p0: 0 },
+    { base: .20, depth: .48, f1: .033, f2: .061, speed: -.032, inten: .82,  seed: 47.9, p0: 3 },
+    { base: .30, depth: .42, f1: .017, f2: .104, speed:  .060, inten: .66,  seed: 91.1, p0: 7 }
+  ];
+
+  function hash(x, y) {
+    var h = Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263);
+    h = Math.imul(h ^ (h >>> 13), 1274126177);
+    h ^= h >>> 16;
+    return (h >>> 0) / 4294967296;
+  }
+  function noise(x, y) {
+    var xi = Math.floor(x), yi = Math.floor(y);
+    var xf = x - xi, yf = y - yi;
+    var u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    var a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+  function mulberry32(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function smooth(a, b, x) { var t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); }
+  function hexRgb(h) { return [1, 3, 5].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); }
+  function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+
+  var W, H, cols, rows, ox, oy, grid, edge, stars = [], lut = [], hazeColor = '#171221';
+  var buckets = [];
+  for (var k = 0; k < NB; k++) buckets.push([]);
+
+  function buildColors() {
+    var low = hexRgb(PAL.low), mid = hexRgb(PAL.mid), high = hexRgb(PAL.high), ed = hexRgb(PAL.edge);
+    for (var lv = 0; lv < LV; lv++) {
+      var b = (lv + 0.5) / LV;
+      var base = b < 0.45 ? mix(low, mid, smooth(0.06, 0.45, b)) : mix(mid, high, smooth(0.45, 1, b));
+      var alpha = (0.35 + 0.65 * Math.min(1, b * 1.4)).toFixed(3);
+      for (var e = 0; e < EV; e++) {
+        var c = mix(base, ed, (e / (EV - 1)) * 0.85);
+        lut[lv * EV + e] = 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + alpha + ')';
+      }
+    }
+    var hz = mix(BG, mid, 0.07 + 0.03 * STORM);
+    hazeColor = 'rgb(' + (hz[0] | 0) + ',' + (hz[1] | 0) + ',' + (hz[2] | 0) + ')';
+  }
+
+  function makeStars() {
+    var rnd = mulberry32(20261027);
+    stars = [];
+    for (var i = 0; i < 200; i++) {
+      var c = Math.floor(rnd() * cols), r = Math.floor(rnd() * Math.max(1, rows - 2));
+      var b = rnd();
+      var ch = b > 0.985 ? '\u2726' : b > 0.9 ? '*' : b > 0.65 ? '+' : '.';
+      stars.push({ c: c, r: r, ch: ch, a: 0.3 + 0.7 * b, sp: 0.4 + rnd() * 1.2, ph: rnd() * Math.PI * 2 });
+    }
+  }
+
+  function resize() {
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W; canvas.height = H;
+    cols = Math.max(12, Math.floor(W / CW));
+    rows = Math.max(12, Math.floor(H / CH));
+    ox = (W - cols * CW) / 2;
+    oy = H - rows * CH;
+    grid = new Float32Array(cols * rows);
+    edge = new Float32Array(cols * rows);
+    makeStars();
+  }
+
+  function curtainTop(L, xs, t) {
+    var ph = L.p0 + t * L.speed;
+    return rows * (
+      L.base
+      + 0.05 * Math.sin(xs * L.f1 + ph)
+      + 0.03 * Math.sin(xs * L.f2 - ph * 1.7 + L.seed)
+      + 0.012 * Math.sin(xs * 0.15 + t * 0.7 + L.seed)
+      + 0.09 * (noise(xs * 0.045 + L.seed, ph * 0.6) - 0.5)
+    );
+  }
+
+  function computeAurora(t) {
+    grid.fill(0); edge.fill(0);
+    var sb = 0.45 + 0.4 * STORM;
+    var rc = Math.min(0.6, 0.18 + 0.12 * STORM);
+    var thr = 0.22 - 0.05 * STORM;
+    for (var li = 0; li < layers.length; li++) {
+      var L = layers[li];
+      var depthR = L.depth * rows;
+      for (var c = 0; c < cols; c++) {
+        var m = noise(c * 0.028 + L.seed * 3, t * 0.05 + L.seed);
+        var mask = smooth(thr, thr + 0.45, m);
+        if (mask < 0.01) continue;
+        var n1 = noise(c * 0.35, t * 0.6 + L.seed);
+        var n2 = noise(c * 0.9 + 13.7, t * 1.1 + L.seed);
+        var ray = (1 - rc) + rc * (0.7 * n1 + 0.3 * n2);
+        var amp = L.inten * sb * ray * mask;
+        if (amp < 0.02) continue;
+        var y0 = Math.max(0.5, curtainTop(L, c, t));
+        for (var r = Math.max(0, Math.floor(y0) - 1); r < rows; r++) {
+          var d = r + 0.5 - y0;
+          if (d < -0.6) continue;
+          var fall = 1 - d / depthR;
+          if (fall <= 0) break;
+          var rise = clamp01((d + 0.6) / 1.8);
+          var b = amp * rise * fall * Math.sqrt(fall);
+          if (b > 1) b = 1;
+          var i = r * cols + c;
+          if (b > grid[i]) {
+            grid[i] = b;
+            edge[i] = d < 2.6 ? 1 - Math.max(0, d) / 2.6 : 0;
+          }
+        }
+      }
+    }
+  }
+
+  function cx(c) { return ox + c * CW + CW / 2; }
+  function cy(r) { return oy + (r + 1) * CH - 4; }
+
+  function render(t, twT, steady) {
+    var bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#171221');
+    bg.addColorStop(0.72, '#171221');
+    bg.addColorStop(1, hazeColor);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    computeAurora(t);
+    ctx.font = FONT;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+
+    ctx.fillStyle = STAR_COLOR;
+    for (var s = 0; s < stars.length; s++) {
+      var st = stars[s];
+      var g = grid[st.r * cols + st.c];
+      if (g > 0.16) continue;
+      var a = steady ? st.a * 0.85 : st.a * (0.55 + 0.45 * Math.sin(twT * st.sp + st.ph));
+      a *= 1 - g / 0.16;
+      if (a <= 0.01) continue;
+      ctx.globalAlpha = a * 0.7;
+      ctx.fillText(st.ch, cx(st.c), cy(st.r));
+    }
+    ctx.globalAlpha = 1;
+
+    for (var k = 0; k < NB; k++) buckets[k].length = 0;
+    for (var r = 0; r < rows; r++) {
+      var base = r * cols;
+      for (var c = 0; c < cols; c++) {
+        var b = grid[base + c];
+        if (b < 0.06) continue;
+        var gi = 1 + Math.min(6, ((b - 0.06) / 0.94 * 7) | 0);
+        var lv = Math.min(LV - 1, (b * LV) | 0);
+        var e = edge[base + c];
+        var ei = e > 0 ? Math.min(EV - 1, Math.ceil(e * (EV - 1))) : 0;
+        buckets[lv * EV + ei].push(c, r, gi);
+      }
+    }
+    for (var k2 = 0; k2 < NB; k2++) {
+      var bk = buckets[k2];
+      if (!bk.length) continue;
+      ctx.fillStyle = lut[k2];
+      for (var i = 0; i < bk.length; i += 3) ctx.fillText(GLYPHS[bk[i + 2]], cx(bk[i]), cy(bk[i + 1]));
+    }
+  }
+
+  buildColors();
+  resize();
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
+    render(37, 0, true);
+    window.addEventListener('resize', function () { resize(); render(37, 0, true); });
+    return;
+  }
+
+  var simT = 0, twT = 0, last = 0, lastRender = 0, rafId = 0;
+  function frame(ts) {
+    rafId = requestAnimationFrame(frame);
+    if (!last) last = ts;
+    var dt = (ts - last) / 1000;
+    last = ts;
+    if (dt > 0.25) dt = 0.25;
+    simT += dt; twT += dt;
+    if (ts - lastRender < 33) return;
+    lastRender = ts;
+    render(simT, twT, false);
+  }
+  rafId = requestAnimationFrame(frame);
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { cancelAnimationFrame(rafId); rafId = 0; last = 0; }
+    else if (!rafId) { rafId = requestAnimationFrame(frame); }
+  });
+  var rzT;
+  window.addEventListener('resize', function () {
+    clearTimeout(rzT);
+    rzT = setTimeout(resize, 150);
+  });
+})();
+</script>
+
 </body>
 </html>
