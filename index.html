@@ -79,7 +79,7 @@
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
   a.pcard {
-    display: block; background: var(--panel); border: 1px solid var(--line);
+    display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line);
     border-radius: 16px; overflow: hidden; color: var(--text); text-decoration: none;
     transition: border-color .15s ease, transform .15s ease;
   }
@@ -89,10 +89,10 @@
     font-size: 17px; line-height: 1.45; white-space: pre; user-select: none;
     border-bottom: 1px solid var(--line);
   }
-  .pcard .body { padding: 14px 16px 16px; }
+  .pcard .body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
   .pcard .name { font-family: 'Alpha Lyrae', 'Space Mono', monospace; font-size: 15px; font-weight: 700; }
   .pcard .meta {
-    margin-top: 6px; font-size: 11px; letter-spacing: 0.14em;
+    margin-top: auto; padding-top: 8px; font-size: 11px; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--muted);
     display: flex; justify-content: space-between; align-items: center;
   }
@@ -198,9 +198,10 @@
     opacity: 1; filter: none; transform: scale(1.15);
     box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--dot);
   }
-  .sec-desc {
-    font-size: 12.5px; line-height: 1.6; color: var(--muted);
-    margin: -8px 0 16px; max-width: 62ch;
+  .pcard .card-desc {
+    font-size: 11.5px; line-height: 1.55; color: var(--muted); margin-top: 5px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; min-height: 36px;
   }
   footer { color: var(--faint); font-size: 12px; margin-top: 48px; }
 </style>
@@ -238,42 +239,47 @@
 
   <details class="section" open>
     <summary><span>Projects — ASCII Visual Projects</span><span class="chev">&#9662;</span></summary>
-    <p class="sec-desc">Seventeen pieces rendered in pure characters: emergent systems, math made visible, ambient slow art, ponds and toys.</p>
   <div class="grid">
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/reaction-diffusion-garden.html">
       <div class="art c-emergent">.oO0Oo.
 o0O0Oo0</div>
       <div class="body"><div class="name">Reaction-Diffusion Garden</div>
+      <p class="card-desc">Reaction-diffusion patterns that grow and bloom like living coral.</p>
       <div class="meta"><span>Emergent Systems</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/murmuration.html">
       <div class="art c-emergent">^ ^  ^ ^
  ^  ^   ^</div>
       <div class="body"><div class="name">Murmuration</div>
+      <p class="card-desc">A starling flock that swirls and folds over the landscape.</p>
       <div class="meta"><span>Emergent Systems</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii-terrain-flyover.html">
       <div class="art c-math">  /\    /\
  /  \/\/  \</div>
       <div class="body"><div class="name">ASCII Terrain Flyover</div>
+      <p class="card-desc">An endless flight over character-drawn mountains.</p>
       <div class="meta"><span>Math Made Visible</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/wave-interference-table.html">
       <div class="art c-math">~~~~~~~~
 ≈≈≈≈≈≈≈≈</div>
       <div class="body"><div class="name">Wave Interference Table</div>
+      <p class="card-desc">Two wave sources ripple and interfere in characters.</p>
       <div class="meta"><span>Math Made Visible</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/kaleidoscope-loom.html">
       <div class="art c-math">&lt;&gt;*&lt;&gt;
 *&lt;&gt;*&lt;&gt;</div>
       <div class="body"><div class="name">Kaleidoscope Loom</div>
+      <p class="card-desc">Mirrored patterns woven from a moving ASCII source.</p>
       <div class="meta"><span>Math Made Visible</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii-aurora.html">
       <div class="art c-ambient">~ ≈ ~ ≈ ~
  ≈ ~ ≈ ~</div>
       <div class="body"><div class="name">ASCII Aurora</div>
+      <p class="card-desc">Aurora curtains rippling over a northern treeline.</p>
       <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/seasonal-tree.html">
@@ -281,36 +287,42 @@ o0O0Oo0</div>
   ***
    |</div>
       <div class="body"><div class="name">Seasonal Tree</div>
+      <p class="card-desc">One tree cycling through the four seasons.</p>
       <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/rain-on-glass.html">
       <div class="art c-ambient">' ' ' '
  ' ' ' '</div>
       <div class="body"><div class="name">Rain on Glass</div>
+      <p class="card-desc">Rain droplets streaking and merging on a window.</p>
       <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/life_clock.html">
       <div class="art c-ambient">11:59
 23:59</div>
       <div class="body"><div class="name">Life Clock</div>
+      <p class="card-desc">A clock whose digits are alive with Game of Life cells.</p>
       <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/weather_pond.html">
       <div class="art c-ambient">~  &gt;&lt;  ~
   ~   ~</div>
       <div class="body"><div class="name">Weather Pond</div>
+      <p class="card-desc">A pond that mirrors LaBelle&#x27;s live weather.</p>
       <div class="meta"><span>Ambient &amp; Slow Art</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii_koi_pond.html">
       <div class="art c-toys">&gt;&lt;   ~
   ~   &gt;&lt;</div>
       <div class="body"><div class="name">ASCII Koi Pond</div>
+      <p class="card-desc">Koi drifting through dark water; click for ripples.</p>
       <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/interactive_ascii_botanical_koi_portfolio.html">
       <div class="art c-toys">*  &gt;&lt;  *
   ~~~~</div>
       <div class="body"><div class="name">Botanical Koi Portfolio</div>
+      <p class="card-desc">Koi and botanicals composed as a living portfolio piece.</p>
       <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/cozy_game_of_life.html">
@@ -318,30 +330,35 @@ o0O0Oo0</div>
 ..#
 ###</div>
       <div class="body"><div class="name">Cozy Game of Life</div>
+      <p class="card-desc">Conway&#x27;s classic, softened into a cozy screensaver.</p>
       <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ocean-in-a-bottle.html">
       <div class="art c-toys">~~~~~~
 ≈≈≈≈≈≈</div>
       <div class="body"><div class="name">Ocean in a Bottle</div>
+      <p class="card-desc">A tiny sea with waves and weather in a bottle.</p>
       <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii_photo_booth.html">
       <div class="art c-toys">( @ )
 [___]</div>
       <div class="body"><div class="name">ASCII Photo Booth</div>
+      <p class="card-desc">Turn any photo into ASCII art and save it as a PNG.</p>
       <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/ascii_spinner.html">
       <div class="art c-toys"> @@@
 @   @</div>
       <div class="body"><div class="name">ASCII Spinner</div>
+      <p class="card-desc">A rotating 3D torus, cube, and sphere in pure characters.</p>
       <div class="meta"><span>Ponds, Portraits &amp; Toys</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/ASCII-Wallpaper/">
       <div class="art c-pink"> /\/\
 ~~~~~</div>
       <div class="body"><div class="name">ASCII Wallpaper Generator</div>
+      <p class="card-desc">Seeded ASCII landscapes exported as real wallpapers.</p>
       <div class="meta"><span>Wallpaper Generator</span><span class="go">View &rarr;</span></div></div>
     </a>
   </div>
@@ -349,42 +366,47 @@ o0O0Oo0</div>
 
   <details class="section" open>
     <summary><span>Projects — Apps & Tools</span><span class="chev">&#9662;</span></summary>
-    <p class="sec-desc">Small single-purpose tools for focus, language, codes, and everyday tasks.</p>
   <div class="grid">
     <a class="pcard" href="https://heycristobal.com/Wordnest/">
       <div class="art c-apps">le chat
  = cat</div>
       <div class="body"><div class="name">WordNest</div>
+      <p class="card-desc">French flashcard study app.</p>
       <div class="meta"><span>French Flashcards</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/pomodoro-terrarium/">
       <div class="art c-emergent">25:00
  \|/</div>
       <div class="body"><div class="name">Pomodoro Terrarium</div>
+      <p class="card-desc">Grow a voxel garden while you focus.</p>
       <div class="meta"><span>Focus Timer</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/Lamplight/">
       <div class="art c-toys">  *  
  [o] </div>
       <div class="body"><div class="name">Lamplight</div>
+      <p class="card-desc">Your cozy RSVP library.</p>
       <div class="meta"><span>RSVP Library</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/nimbus-code-beautifier/">
       <div class="art c-math">{ ; }
 &lt;/&gt;</div>
       <div class="body"><div class="name">Prettycode</div>
+      <p class="card-desc">Export beautiful code snippets.</p>
       <div class="meta"><span>Code Snippets</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/QR-Code-generator/">
       <div class="art c-pink"># # #
  # # </div>
       <div class="body"><div class="name">Maple QR</div>
+      <p class="card-desc">Geometric floral QR generator.</p>
       <div class="meta"><span>QR Generator</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/Office-Kanban-Board/">
       <div class="art c-ambient">[x]
 [ ]</div>
       <div class="body"><div class="name">The Office Todo</div>
+      <p class="card-desc">Todo app, but make it The Office.</p>
       <div class="meta"><span>Kanban Board</span><span class="go">View &rarr;</span></div></div>
     </a>
   </div>
@@ -392,30 +414,33 @@ o0O0Oo0</div>
 
   <details class="section" open>
     <summary><span>Projects — Worlds & Play</span><span class="chev">&#9662;</span></summary>
-    <p class="sec-desc">Voxel builders and playful interactive pieces to decorate, type, and tinker with.</p>
   <div class="grid">
     <a class="pcard" href="https://heycristobal.com/voxel-worlds/">
       <div class="art c-emergent"> /\
 /__\</div>
       <div class="body"><div class="name">Voxel Worlds</div>
+      <p class="card-desc">Build little worlds with flowing water and lava.</p>
       <div class="meta"><span>Voxel Builder</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/Voxel-lofi-room/">
       <div class="art c-toys"> /\ 
 [__]</div>
       <div class="body"><div class="name">Lofi Rooms</div>
+      <p class="card-desc">Build and decorate cozy voxel rooms.</p>
       <div class="meta"><span>Room Decorator</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/typing-speed-terrarium/">
       <div class="art c-ambient">a s d f
  \|/ </div>
       <div class="body"><div class="name">Typerrium</div>
+      <p class="card-desc">Grow digital flora through speed and precision.</p>
       <div class="meta"><span>Typing Garden</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/Loop-Forge/">
       <div class="art c-math">o-o-o
 &gt;&gt;&gt;&gt;</div>
       <div class="body"><div class="name">Loop Forge</div>
+      <p class="card-desc">A grid that writes Strudel music code.</p>
       <div class="meta"><span>Music Grid</span><span class="go">View &rarr;</span></div></div>
     </a>
   </div>
@@ -423,96 +448,110 @@ o0O0Oo0</div>
 
   <details class="section" open>
     <summary><span>Projects — Games</span><span class="chev">&#9662;</span></summary>
-    <p class="sec-desc">Mini games from the collection: one mechanic each, quick rounds, instant restarts.</p>
   <div class="grid">
     <a class="pcard" href="https://heycristobal.com/rubics-cube/">
       <div class="art c-pink">###
 ###</div>
       <div class="body"><div class="name">Retro Rubic</div>
+      <p class="card-desc">A tactile 3D geometric puzzle classic.</p>
       <div class="meta"><span>3D Puzzle</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/cozy-2048/">
       <div class="art c-ambient">2048
 2 4 8</div>
       <div class="body"><div class="name">Cozy 2048</div>
+      <p class="card-desc">Soft-palette numerical merging.</p>
       <div class="meta"><span>Number Merge</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/mirror-run/mirrorrun.html">
       <div class="art c-pink">  ^  
   v  </div>
       <div class="body"><div class="name">Mirror Run</div>
+      <p class="card-desc">Guide mirrored runners through split-screen obstacles.</p>
       <div class="meta"><span>Split-Screen Runner</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/lassoio/lasso-io.html">
       <div class="art c-toys"> (@) 
   |  </div>
       <div class="body"><div class="name">Lasso.io</div>
+      <p class="card-desc">Circle rivals and cut ropes in a western arena.</p>
       <div class="meta"><span>Rope Arena</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/afterimage/afterimage.html">
       <div class="art c-math">o . .
 . . .</div>
       <div class="body"><div class="name">Afterimage</div>
+      <p class="card-desc">Trace a fading route from memory.</p>
       <div class="meta"><span>Memory Trace</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/fence/fence.html">
       <div class="art c-apps">|-|-|
 |-|-|</div>
       <div class="body"><div class="name">Fence</div>
+      <p class="card-desc">Claim pasture before the slime spreads.</p>
       <div class="meta"><span>Territory Claim</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/lastlight/lastlight.html">
       <div class="art c-toys">  *  
  [|] </div>
       <div class="body"><div class="name">Last Light</div>
+      <p class="card-desc">Keep your candle burning through a pixel cave.</p>
       <div class="meta"><span>Pixel Cave</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/glide-game/glide.html">
       <div class="art c-math">  /| 
  /_| </div>
       <div class="body"><div class="name">Glide</div>
+      <p class="card-desc">Ride the air as a paper airplane.</p>
       <div class="meta"><span>Paper Plane</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/fall-game/fall-game.html">
       <div class="art c-pink">| v |
 |   |</div>
       <div class="body"><div class="name">Fall</div>
+      <p class="card-desc">Descend a deep shaft and stick the landing.</p>
       <div class="meta"><span>Deep Descent</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/skip/skip.html">
       <div class="art c-math"> o o o
 ~~~~~~</div>
       <div class="body"><div class="name">Skip</div>
+      <p class="card-desc">Skim and bounce a stone across the water.</p>
       <div class="meta"><span>Stone Skipping</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/loop-game/loop.html">
       <div class="art c-emergent">-&gt;-
 -&lt;-</div>
       <div class="body"><div class="name">Loop</div>
+      <p class="card-desc">Avoid echoes of your previous runs.</p>
       <div class="meta"><span>Time Echoes</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/gravity-well/gravity-well.html">
       <div class="art c-apps">. * .
  . . </div>
       <div class="body"><div class="name">Gravity Well</div>
+      <p class="card-desc">Guide stardust into orbit around a growing star.</p>
       <div class="meta"><span>Orbital</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/thread-game/thread.html">
       <div class="art c-toys">o---o
  \_/ </div>
       <div class="body"><div class="name">Thread</div>
+      <p class="card-desc">Wrap a string around pins and catch beads.</p>
       <div class="meta"><span>String &amp; Pins</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/fold-sheet/fold-sheet.html">
       <div class="art c-ambient"> ___ 
 |/  |</div>
       <div class="body"><div class="name">Fold Sheet</div>
+      <p class="card-desc">Fold paper to connect matching dots.</p>
       <div class="meta"><span>Paper Puzzle</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/gnomeboy/">
       <div class="art c-emergent"> /\ 
 (o_o)</div>
       <div class="body"><div class="name">Gnomeboy</div>
+      <p class="card-desc">Launch Barnaby the gnome, glide and dive for acorns.</p>
       <div class="meta"><span>Gnome Glide</span><span class="go">View &rarr;</span></div></div>
     </a>
   </div>
@@ -520,18 +559,19 @@ o0O0Oo0</div>
 
   <details class="section" open>
     <summary><span>Projects — Art & Wallpaper</span><span class="chev">&#9662;</span></summary>
-    <p class="sec-desc">Generators for wallpaper and soft gradient art.</p>
   <div class="grid">
     <a class="pcard" href="https://heycristobal.com/isometric-cube-wallpaper-generator/">
       <div class="art c-ambient">[][]
 [][]</div>
       <div class="body"><div class="name">CubeWall</div>
+      <p class="card-desc">Prismatic cube-grid wallpaper studio.</p>
       <div class="meta"><span>Wallpaper Studio</span><span class="go">View &rarr;</span></div></div>
     </a>
     <a class="pcard" href="https://heycristobal.com/soft-gradient-generator/">
       <div class="art c-pink">≈≈≈
 ~~~</div>
       <div class="body"><div class="name">Soft Gradient</div>
+      <p class="card-desc">Shuffle soft blurred gradients, save as PNG.</p>
       <div class="meta"><span>Gradient Maker</span><span class="go">View &rarr;</span></div></div>
     </a>
   </div>
