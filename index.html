@@ -633,10 +633,6 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
   var CW = 11, CH = 16;
   var FONT = '13px "Space Mono", ui-monospace, Menlo, Consolas, monospace';
   var GLYPHS = ' .\u00B7:;+*#';
-  var BG = THEMES[skyName].bg.slice();
-  var skyCss = 'rgb(' + BG[0] + ',' + BG[1] + ',' + BG[2] + ')';
-  var STAR_COLOR = '#CFE0FF';
-  var LV = 24, EV = 4, NB = LV * EV;
   var THEMES = {
     violet:  { pal: { low: '#2E1060', mid: '#A24DFF', high: '#F4D2FF', edge: '#FF4FC8' }, bg: [23, 18, 33] },
     classic: { pal: { low: '#0E5B34', mid: '#3CE882', high: '#B8FFD9', edge: '#9B6BFF' }, bg: [5, 7, 15] },
@@ -646,6 +642,10 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
   try { skyName = localStorage.getItem('vault-sky') || 'violet'; } catch (e) {}
   if (!THEMES[skyName]) skyName = 'violet';
   var PAL = THEMES[skyName].pal;
+  var BG = THEMES[skyName].bg.slice();
+  var skyCss = 'rgb(' + BG[0] + ',' + BG[1] + ',' + BG[2] + ')';
+  var STAR_COLOR = '#CFE0FF';
+  var LV = 24, EV = 4, NB = LV * EV;
   var STORM = 1.5;
   var layers = [
     { base: .10, depth: .58, f1: .021, f2: .083, speed:  .045, inten: 1.00, seed: 11.3, p0: 0 },
