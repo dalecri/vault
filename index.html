@@ -18,7 +18,7 @@
   body {
     background: #171221; color: #EDE7F2;
     font-family: "Space Mono", ui-monospace, Menlo, monospace;
-    min-height: 100vh; padding: 56px 20px 48px;
+    min-height: 100vh; padding: 56px 20px 96px;
     display: flex; flex-direction: column; align-items: center;
   }
   main { width: 100%; max-width: 880px; text-align: center; position: relative; z-index: 1; }
@@ -170,11 +170,30 @@
   }
   #searchClear:hover { border-color: #E8873A; color: #EDE7F2; }
   .no-results { color: #9B8FA8; font-size: 14px; margin-top: 40px; }
+  .themebar {
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    z-index: 5; display: flex; gap: 2px; padding: 6px;
+    background: rgba(23, 18, 33, .72); border: 1px solid #3A3247; border-radius: 999px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .themebar button {
+    font-family: "Space Mono", ui-monospace, Menlo, monospace; font-size: 12px;
+    color: #9B8FA8; background: transparent; border: 0; border-radius: 999px;
+    padding: 7px 14px; cursor: pointer; transition: color .2s, background .2s;
+    white-space: nowrap;
+  }
+  .themebar button:hover { color: #EDE7F2; }
+  .themebar button[aria-pressed="true"] { background: #E8873A; color: #170C03; }
   footer { color: #5C5170; font-size: 12px; margin-top: 48px; }
 </style>
 </head>
 <body>
 <canvas id="auroraBg" aria-hidden="true"></canvas>
+<div class="themebar" role="group" aria-label="Sky theme">
+  <button type="button" data-sky="violet" aria-pressed="true">Violet Storm</button>
+  <button type="button" data-sky="classic" aria-pressed="false">Classic</button>
+  <button type="button" data-sky="blood" aria-pressed="false">Blood Sky</button>
+</div>
 <main>
   <h1>Vault<span class="dot">.</span></h1>
 
@@ -614,10 +633,19 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
   var CW = 11, CH = 16;
   var FONT = '13px "Space Mono", ui-monospace, Menlo, Consolas, monospace';
   var GLYPHS = ' .\u00B7:;+*#';
-  var BG = [23, 18, 33]; // vault plum #171221
+  var BG = THEMES[skyName].bg.slice();
+  var skyCss = 'rgb(' + BG[0] + ',' + BG[1] + ',' + BG[2] + ')';
   var STAR_COLOR = '#CFE0FF';
   var LV = 24, EV = 4, NB = LV * EV;
-  var PAL = { low: '#2E1060', mid: '#A24DFF', high: '#F4D2FF', edge: '#FF4FC8' };
+  var THEMES = {
+    violet:  { pal: { low: '#2E1060', mid: '#A24DFF', high: '#F4D2FF', edge: '#FF4FC8' }, bg: [23, 18, 33] },
+    classic: { pal: { low: '#0E5B34', mid: '#3CE882', high: '#B8FFD9', edge: '#9B6BFF' }, bg: [5, 7, 15] },
+    blood:   { pal: { low: '#5C0D16', mid: '#E8432E', high: '#FFC98A', edge: '#B0186E' }, bg: [11, 4, 6] }
+  };
+  var skyName = 'violet';
+  try { skyName = localStorage.getItem('vault-sky') || 'violet'; } catch (e) {}
+  if (!THEMES[skyName]) skyName = 'violet';
+  var PAL = THEMES[skyName].pal;
   var STORM = 1.5;
   var layers = [
     { base: .10, depth: .58, f1: .021, f2: .083, speed:  .045, inten: 1.00, seed: 11.3, p0: 0 },
@@ -745,8 +773,8 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
 
   function render(t, twT, steady) {
     var bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, '#171221');
-    bg.addColorStop(0.72, '#171221');
+    bg.addColorStop(0, skyCss);
+    bg.addColorStop(0.72, skyCss);
     bg.addColorStop(1, hazeColor);
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
@@ -792,6 +820,23 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
 
   buildColors();
   resize();
+
+  function applyBody() { document.body.style.background = skyCss; }
+  applyBody();
+  window.VaultSky = {
+    current: function () { return skyName; },
+    setTheme: function (name) {
+      if (!THEMES[name]) return;
+      skyName = name;
+      PAL = THEMES[name].pal;
+      BG = THEMES[name].bg.slice();
+      skyCss = 'rgb(' + BG[0] + ',' + BG[1] + ',' + BG[2] + ')';
+      buildColors();
+      applyBody();
+      try { localStorage.setItem('vault-sky', name); } catch (e) {}
+      if (reduce) render(37, 0, true);
+    }
+  };
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) {
@@ -880,6 +925,25 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
   clearBtn.addEventListener('click', function () {
     input.value = ''; apply(); input.focus();
   });
+})();
+</script>
+
+<script>
+(function () {
+  var btns = document.querySelectorAll('[data-sky]');
+  function sync() {
+    var cur = window.VaultSky ? window.VaultSky.current() : 'violet';
+    btns.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-sky') === cur ? 'true' : 'false');
+    });
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (window.VaultSky) window.VaultSky.setTheme(b.getAttribute('data-sky'));
+      sync();
+    });
+  });
+  sync();
 })();
 </script>
 </body>
