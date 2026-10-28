@@ -130,6 +130,20 @@
   }
   .prompt-card .p-name { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
   .prompt-card .copy { width: 100%; }
+  .pgrid { align-items: start; }
+  .prompt-card .p-desc {
+    font-size: 11px; line-height: 1.55; color: #9B8FA8; margin-bottom: 10px;
+  }
+  .prompt-card .p-actions { display: flex; gap: 8px; width: 100%; }
+  .prompt-card .p-actions .copy { flex: 1; width: auto; }
+  .prompt-card.expanded { aspect-ratio: auto; }
+  .prompt-card .p-full {
+    width: 100%; text-align: left; white-space: pre-wrap; word-break: break-word;
+    font-size: 11.5px; line-height: 1.6; color: #C9BCDD;
+    max-height: 280px; overflow: auto;
+    background: #1E1826; border: 1px solid #3A3247; border-radius: 12px;
+    padding: 10px 12px; margin-bottom: 10px;
+  }
   footer { color: #5C5170; font-size: 12px; margin-top: 48px; }
 </style>
 </head>
@@ -264,27 +278,34 @@ o0O0Oo0</div>
         <div class="p-art" style="color:#E8873A">( @ )
 [___]</div>
         <div class="p-name">ASCII Photo Booth</div>
-        <button class="copy" data-key="p0" type="button">Copy</button>
+        <p class="p-desc">Turns any photo into saveable ASCII art, with live sliders and PNG export.</p>
+        <pre class="p-full" hidden></pre>
+        <div class="p-actions"><button class="copy" data-copykey="p0" type="button">Copy</button><button class="copy" data-viewkey="p0" type="button">View</button></div>
       </div>
       <div class="prompt-card">
         <div class="p-art" style="color:#7FB8D9">~ &gt;&lt; ~</div>
         <div class="p-name">Weather Pond</div>
-        <button class="copy" data-key="p1" type="button">Copy</button>
+        <p class="p-desc">A pond that mirrors LaBelle&#x27;s live weather: rain, snow, wind and all.</p>
+        <pre class="p-full" hidden></pre>
+        <div class="p-actions"><button class="copy" data-copykey="p1" type="button">Copy</button><button class="copy" data-viewkey="p1" type="button">View</button></div>
       </div>
       <div class="prompt-card">
         <div class="p-art" style="color:#B9A7DD">23:59
 .#.</div>
         <div class="p-name">Life Clock</div>
-        <button class="copy" data-key="p2" type="button">Copy</button>
+        <p class="p-desc">A screensaver clock grown cell by cell from Conway&#x27;s Game of Life.</p>
+        <pre class="p-full" hidden></pre>
+        <div class="p-actions"><button class="copy" data-copykey="p2" type="button">Copy</button><button class="copy" data-viewkey="p2" type="button">View</button></div>
       </div>
       <div class="prompt-card">
         <div class="p-art" style="color:#A8CCB3"> @@@
 @   @</div>
         <div class="p-name">ASCII Spinner</div>
-        <button class="copy" data-key="p3" type="button">Copy</button>
+        <p class="p-desc">Rotating 3D torus, cube and sphere rendered in pure characters.</p>
+        <pre class="p-full" hidden></pre>
+        <div class="p-actions"><button class="copy" data-copykey="p3" type="button">Copy</button><button class="copy" data-viewkey="p3" type="button">View</button></div>
       </div>
     </div>
-  
   </details>
   <footer>More sections land here as they are built.</footer>
 </main>
@@ -346,12 +367,15 @@ How it works:
 - Click the Pause button (or press space) to freeze a frame.
 
 Style: dark soft-purple page background #1E1826, the art in a #2A2233 panel with 14px rounded corners, Space Mono font with a system monospace fallback, one amber accent #E8873A for controls. Respect prefers-reduced-motion by showing one static frame. Make it work by just opening the file, no build step."};
-document.querySelectorAll('button.copy').forEach(function (btn) {
+function setBtn(btn, label) {
+  btn.textContent = label;
+}
+document.querySelectorAll('[data-copykey]').forEach(function (btn) {
   btn.addEventListener('click', function () {
-    var text = PROMPTS[btn.getAttribute('data-key')] || '';
+    var text = PROMPTS[btn.getAttribute('data-copykey')] || '';
     function done() {
-      btn.textContent = 'Copied';
-      setTimeout(function () { btn.textContent = 'Copy'; }, 1200);
+      setBtn(btn, 'Copied');
+      setTimeout(function () { setBtn(btn, 'Copy'); }, 1200);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(done).catch(function () { fallback(); });
@@ -361,6 +385,23 @@ document.querySelectorAll('button.copy').forEach(function (btn) {
       ta.value = text; document.body.appendChild(ta); ta.select();
       try { document.execCommand('copy'); } catch (e) {}
       document.body.removeChild(ta); done();
+    }
+  });
+});
+document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var card = btn.closest('.prompt-card');
+    var pre = card.querySelector('.p-full');
+    var key = btn.getAttribute('data-viewkey');
+    if (pre.hidden) {
+      if (!pre.textContent) { pre.textContent = PROMPTS[key] || ''; }
+      pre.hidden = false;
+      card.classList.add('expanded');
+      setBtn(btn, 'Hide');
+    } else {
+      pre.hidden = true;
+      card.classList.remove('expanded');
+      setBtn(btn, 'View');
     }
   });
 });
