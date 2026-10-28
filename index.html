@@ -6,56 +6,74 @@
 <title>Vault — Cristobal D'Alessio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    background: #1E1826; color: #EDE7F2;
+    background: #171221; color: #EDE7F2;
     font-family: "Space Mono", ui-monospace, Menlo, monospace;
-    min-height: 100vh; padding: 48px 20px;
+    min-height: 100vh; padding: 56px 20px 48px;
     display: flex; flex-direction: column; align-items: center;
   }
-  main { width: 100%; max-width: 640px; }
-  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
-  .sub { color: #9B8FA8; font-size: 14px; margin: 8px 0 32px; }
-  h2 {
-    font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
-    color: #9B8FA8; margin: 28px 0 12px;
+  main { width: 100%; max-width: 880px; text-align: center; }
+  .motif {
+    font-size: 15px; line-height: 1.5; white-space: pre;
+    margin-bottom: 28px; user-select: none;
   }
-  a.card {
-    display: flex; justify-content: space-between; align-items: center;
-    background: #2A2233; border: 1px solid #3A3247; border-radius: 14px;
-    padding: 18px 20px; margin-bottom: 12px;
-    color: #EDE7F2; text-decoration: none;
-    transition: border-color .15s ease, transform .15s ease;
+  .motif .w { color: #7FB8D9; }
+  .motif .f { color: #E8873A; }
+  .motif .s { color: #A8CCB3; }
+  h1 {
+    font-size: clamp(48px, 10vw, 88px); font-weight: 700;
+    letter-spacing: -0.01em; line-height: 1.05;
   }
-  a.card:hover { border-color: #E8873A; transform: translateY(-1px); }
-  .card .name { font-size: 16px; font-weight: 700; }
-  .card .desc { color: #9B8FA8; font-size: 13px; margin-top: 4px; }
-  .card .arrow { color: #E8873A; font-size: 18px; flex-shrink: 0; margin-left: 16px; }
-  footer { color: #9B8FA8; font-size: 12px; margin-top: 40px; }
+  h1 .dot { color: #E8873A; }
+  .sub {
+    color: #9B8FA8; font-size: clamp(15px, 2.2vw, 19px);
+    line-height: 1.7; max-width: 52ch; margin: 26px auto 0;
+  }
+  .stats {
+    margin-top: 30px; font-size: 14px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #9B8FA8;
+  }
+  .stats b { color: #F2C94C; font-weight: 700; }
+  .stats .sep { margin: 0 14px; color: #5C5170; }
+  .wave {
+    color: #7FB8D9; opacity: .55; font-size: 15px; letter-spacing: .1em;
+    margin: 44px 0 30px; white-space: nowrap; overflow: hidden; user-select: none;
+  }
+  nav {
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+  }
+  nav a {
+    display: inline-block; padding: 13px 26px; border-radius: 999px;
+    border: 1px solid #3A3247; background: #241B31;
+    color: #B7AACE; text-decoration: none;
+    font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase;
+    transition: border-color .15s ease, color .15s ease, transform .15s ease;
+  }
+  nav a:hover { border-color: #E8873A; color: #EDE7F2; transform: translateY(-1px); }
+  footer { color: #5C5170; font-size: 12px; margin-top: 48px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Vault</h1>
-  <p class="sub">Design, prompts, and quick links. Preview and copy, fast.</p>
+  <div class="motif" aria-hidden="true"><span class="w">~   ~    ~</span>        <span class="s">\|/  \|/</span>
+<span class="w">~</span>       <span class="f">&gt;&lt;</span>        <span class="w">~</span>    <span class="s">--*--</span>
+   <span class="w">~   ~</span>    <span class="f">&gt;&lt;</span>         <span class="s">/|\  /|\</span>   <span class="w">~</span></div>
 
-  <h2>Quick links</h2>
-  <a class="card" href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/">
-    <span>
-      <span class="name">ASCII Projects</span>
-      <div class="desc">Landing page for the ASCII project family</div>
-    </span>
-    <span class="arrow">&rarr;</span>
-  </a>
-  <a class="card" href="https://heycristobal.com/landing-templates/">
-    <span>
-      <span class="name">Landing Templates</span>
-      <div class="desc">Reusable landing page templates</div>
-    </span>
-    <span class="arrow">&rarr;</span>
-  </a>
+  <h1>Vault<span class="dot">.</span></h1>
+
+  <p class="sub">Design and prompts, kept for quick preview and copy. Everything here is one click from being used.</p>
+
+  <div class="stats"><b>2</b> Quick links<span class="sep">&middot;</span><b>1</b> Hub<span class="sep">&middot;</span><b>0</b> Friction</div>
+
+  <div class="wave" aria-hidden="true">..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........</div>
+
+  <nav>
+    <a href="https://heycristobal.com/ASCII-VISUAL-PROJECTS/">ASCII Projects</a>
+    <a href="https://heycristobal.com/landing-templates/">Landing Templates</a>
+  </nav>
 
   <footer>More sections land here as they are built.</footer>
 </main>
