@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="13" fill="#1E1826"/>
+  <g font-family="ui-monospace, Menlo, Consolas, monospace" font-size="14.5" font-weight="700" fill="#EDE7F2" text-anchor="middle">
+    <text x="32" y="25"> /\_/\</text>
+    <text x="32" y="40">( <tspan fill="#E8873A">o</tspan><tspan fill="#E85C8A">.</tspan><tspan fill="#E8873A">o</tspan> )</text>
+    <text x="32" y="55"> &gt; ^ &lt;</text>
+  </g>
+</svg>
