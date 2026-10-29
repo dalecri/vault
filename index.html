@@ -14,17 +14,6 @@
     --text: #EDE7F2; --muted: #9B8FA8; --faint: #5C5170; --chip: #B7AACE;
     --accent: #E8873A; --accent2: #F2C94C; --wave: #7FB8D9; --soft: #C9BCDD;
   }
-  :root[data-sky="classic"] {
-    --bg: #05070F; --panel: #0B1210; --panel2: #070D0B; --line: #1E3329;
-    --text: #E4F2E7; --muted: #8FAE97; --faint: #4A6353; --chip: #A9C6B0;
-    --accent: #3CE882; --accent2: #B8FFD9; --wave: #3CE882; --soft: #C4DCC9;
-  }
-  :root[data-sky="blood"] {
-    --bg: #0B0406; --panel: #1C0A0E; --panel2: #14060A; --line: #3D1A20;
-    --text: #F5E9E4; --muted: #B08D90; --faint: #6B4A4E; --chip: #CBA3A0;
-    --accent: #E8432E; --accent2: #FFC98A; --wave: #E8432E; --soft: #E3C8C4;
-  }
-
   @font-face {
     font-family: 'Alpha Lyrae';
     src: url('assets/fonts/AlphaLyrae-Medium.woff2') format('woff2'),
@@ -195,18 +184,14 @@
   }
   #searchClear:hover { border-color: var(--accent); color: var(--text); }
   .no-results { color: var(--muted); font-size: 14px; margin-top: 40px; }
-  .skybtns { position: fixed; top: 14px; right: 14px; z-index: 6; display: flex; gap: 8px; }
-  .sky-dot {
-    width: 16px; height: 16px; border-radius: 999px; padding: 0; cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, .25); background: var(--dot);
-    opacity: .32; filter: saturate(.3); transform: scale(.92);
-    transition: opacity .2s ease, transform .2s ease, box-shadow .2s ease, filter .2s ease;
+  .notion-link {
+    position: fixed; top: 14px; right: 14px; z-index: 6;
+    width: 32px; height: 32px; border-radius: 9px;
+    background: #F7F5FA; border: 1px solid rgba(255, 255, 255, .25);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .15s ease, box-shadow .15s ease;
   }
-  .sky-dot:hover { opacity: .85; filter: saturate(.8); }
-  .sky-dot[aria-pressed="true"] {
-    opacity: 1; filter: none; transform: scale(1.15);
-    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--dot);
-  }
+  .notion-link:hover { transform: scale(1.08); box-shadow: 0 2px 10px rgba(0, 0, 0, .35); }
   .pcard .card-desc {
     font-size: 11.5px; line-height: 1.55; color: var(--muted); margin-top: 5px;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
@@ -217,11 +202,7 @@
 </head>
 <body>
 <canvas id="auroraBg" aria-hidden="true"></canvas>
-<div class="skybtns" role="group" aria-label="Sky theme">
-  <button type="button" class="sky-dot" data-sky="violet" style="--dot:#A24DFF" aria-pressed="true" title="Violet Storm" aria-label="Violet Storm"></button>
-  <button type="button" class="sky-dot" data-sky="classic" style="--dot:#3CE882" aria-pressed="false" title="Classic" aria-label="Classic"></button>
-  <button type="button" class="sky-dot" data-sky="blood" style="--dot:#E8432E" aria-pressed="false" title="Blood Sky" aria-label="Blood Sky"></button>
-</div>
+<a class="notion-link" href="https://app.notion.com/p/408b94d192968171aa96dc3226d48756" target="_blank" rel="noopener" title="Notion dashboard" aria-label="Open the Notion dashboard"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M6.5 19.5v-15l11 15v-15" fill="none" stroke="#171221" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="square"/></svg></a>
 <main>
   <h1>Vault<span class="dot">.</span></h1>
 
@@ -1084,16 +1065,8 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
   var CW = 11, CH = 16;
   var FONT = '13px "Space Mono", ui-monospace, Menlo, Consolas, monospace';
   var GLYPHS = ' .\u00B7:;+*#';
-  var THEMES = {
-    violet:  { pal: { low: '#2E1060', mid: '#A24DFF', high: '#F4D2FF', edge: '#FF4FC8' }, bg: [23, 18, 33] },
-    classic: { pal: { low: '#0E5B34', mid: '#3CE882', high: '#B8FFD9', edge: '#9B6BFF' }, bg: [5, 7, 15] },
-    blood:   { pal: { low: '#5C0D16', mid: '#E8432E', high: '#FFC98A', edge: '#B0186E' }, bg: [11, 4, 6] }
-  };
-  var skyName = 'violet';
-  try { skyName = localStorage.getItem('vault-sky') || 'violet'; } catch (e) {}
-  if (!THEMES[skyName]) skyName = 'violet';
-  var PAL = THEMES[skyName].pal;
-  var BG = THEMES[skyName].bg.slice();
+  var PAL = { low: '#2E1060', mid: '#A24DFF', high: '#F4D2FF', edge: '#FF4FC8' };
+  var BG = [23, 18, 33];
   var skyCss = 'rgb(' + BG[0] + ',' + BG[1] + ',' + BG[2] + ')';
   var STAR_COLOR = '#CFE0FF';
   var LV = 24, EV = 4, NB = LV * EV;
@@ -1272,23 +1245,6 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
   buildColors();
   resize();
 
-  function applyBody() { document.documentElement.setAttribute('data-sky', skyName); }
-  applyBody();
-  window.VaultSky = {
-    current: function () { return skyName; },
-    setTheme: function (name) {
-      if (!THEMES[name]) return;
-      skyName = name;
-      PAL = THEMES[name].pal;
-      BG = THEMES[name].bg.slice();
-      skyCss = 'rgb(' + BG[0] + ',' + BG[1] + ',' + BG[2] + ')';
-      buildColors();
-      applyBody();
-      try { localStorage.setItem('vault-sky', name); } catch (e) {}
-      if (reduce) render(37, 0, true);
-    }
-  };
-
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) {
     render(37, 0, true);
@@ -1379,23 +1335,5 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
 })();
 </script>
 
-<script>
-(function () {
-  var btns = document.querySelectorAll('[data-sky]');
-  function sync() {
-    var cur = window.VaultSky ? window.VaultSky.current() : 'violet';
-    btns.forEach(function (b) {
-      b.setAttribute('aria-pressed', b.getAttribute('data-sky') === cur ? 'true' : 'false');
-    });
-  }
-  btns.forEach(function (b) {
-    b.addEventListener('click', function () {
-      if (window.VaultSky) window.VaultSky.setTheme(b.getAttribute('data-sky'));
-      sync();
-    });
-  });
-  sync();
-})();
-</script>
 </body>
 </html>
