@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<title>Future Projects — Vault</title>
+<meta name="description" content="A holding shelf for links, tweet ideas, pins, reads, and references for projects that do not exist yet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  :root {
+    --bg: #171221; --panel: #241B31; --panel2: #1E1826; --line: #3A3247;
+    --text: #EDE7F2; --muted: #9B8FA8; --faint: #5C5170; --chip: #B7AACE;
+    --accent: #E8873A; --accent2: #F2C94C; --wave: #7FB8D9;
+  }
+  @font-face {
+    font-family: 'Alpha Lyrae';
+    src: url('../assets/fonts/AlphaLyrae-Medium.woff2') format('woff2'),
+         url('../assets/fonts/AlphaLyrae-Medium.woff') format('woff');
+    font-weight: 400 700; font-display: swap;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: "Space Mono", ui-monospace, Menlo, monospace;
+    min-height: 100vh; padding: 56px 20px 48px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  main { width: 100%; max-width: 880px; text-align: center; }
+  h1 {
+    font-family: 'Alpha Lyrae', 'Space Mono', monospace;
+    font-size: clamp(40px, 8vw, 72px); font-weight: 700;
+    letter-spacing: 0; line-height: 1.05;
+  }
+  h1 .dot { color: var(--accent); }
+  .sub {
+    color: var(--muted); font-size: clamp(14px, 2vw, 17px);
+    line-height: 1.7; max-width: 54ch; margin: 24px auto 0;
+  }
+  .stats {
+    margin-top: 28px; font-size: 13px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .stats b { color: var(--accent2); font-weight: 700; }
+  .stats .sep { margin: 0 14px; color: var(--faint); }
+  .wave {
+    color: var(--wave); opacity: .55; font-size: 15px; letter-spacing: .1em;
+    margin: 40px 0 26px; white-space: nowrap; overflow: hidden; user-select: none;
+  }
+  .search-wrap { position: relative; max-width: 520px; margin: 0 auto; }
+  .search-wrap input {
+    width: 100%; padding: 13px 44px 13px 20px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--panel);
+    color: var(--text); font-family: inherit; font-size: 14px; outline: none;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--faint); }
+  #searchClear {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    width: 30px; height: 30px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--panel2); color: var(--chip); font-size: 16px; cursor: pointer; line-height: 1;
+  }
+  nav { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 22px; }
+  nav a {
+    font-family: 'Alpha Lyrae', 'Space Mono', monospace;
+    display: inline-block; padding: 12px 24px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--panel);
+    color: var(--chip); text-decoration: none;
+    font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    transition: border-color .15s ease, color .15s ease, transform .15s ease;
+  }
+  nav a:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
+  .sec-label {
+    margin: 52px 0 6px; font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--muted); text-align: left;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .sec-label .count { color: var(--faint); letter-spacing: 0.1em; }
+  .sec-note { text-align: left; color: var(--faint); font-size: 12.5px; margin-bottom: 14px; }
+  .grid {
+    display: grid; gap: 14px; text-align: left;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  a.rcard {
+    display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 16px; overflow: hidden; color: var(--text); text-decoration: none;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  a.rcard:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .rcard .art {
+    background: var(--panel2); padding: 18px 16px 14px; text-align: center;
+    font-size: 16px; line-height: 1.45; white-space: pre; user-select: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .rcard .body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+  .rcard .name { font-family: 'Alpha Lyrae', 'Space Mono', monospace; font-size: 15px; font-weight: 700; }
+  .rcard .note { font-size: 12px; line-height: 1.55; color: var(--muted); margin-top: 5px; }
+  .rcard .meta {
+    margin-top: auto; padding-top: 10px; font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted);
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  }
+  .rcard .host { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rcard .go { color: var(--accent); font-size: 13px; }
+  .empty {
+    text-align: left; color: var(--faint); font-size: 13px;
+    border: 1px dashed var(--line); border-radius: 16px; padding: 16px 18px;
+  }
+  .hidden { display: none !important; }
+  footer { color: var(--faint); font-size: 12px; margin-top: 56px; line-height: 1.8; }
+  footer a { color: var(--chip); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Future Projects<span class="dot">.</span></h1>
+
+  <p class="sub">Links, tweet ideas, pins, and reads for projects that do not exist yet. Everything filed here is one search away when a project starts.</p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="wave" aria-hidden="true">..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........~~~~~~~~..........</div>
+
+  <div class="search-wrap">
+    <input id="fpSearch" type="search" placeholder="Search future projects" autocomplete="off" aria-label="Search future project resources">
+    <button id="searchClear" type="button" aria-label="Clear search" hidden>&times;</button>
+  </div>
+
+  <nav>
+    <a href="https://heycristobal.com/vault/">&larr; Vault</a>
+  </nav>
+
+  <div id="sections"></div>
+
+  <footer>
+    Filing rule: send a link in chat, say it is for future projects, and it lands here with a note.<br>
+    Part of the <a href="https://heycristobal.com/vault/">Vault</a>.
+  </footer>
+</main>
+
+<script>
+/* ============================================================
+   FUTURE PROJECTS — the resource shelf.
+   To add a link: one new object in RESOURCES below.
+   Fields: cat (must match a CATEGORIES id), title, url,
+           note (why it is saved, one line), art (two-line ASCII
+           header), color (art color), tags (search words).
+   ============================================================ */
+var CATEGORIES = [
+  { id: "tweets",    label: "Tweet Ideas",        note: "Posts worth learning from: hooks, formats, threads that worked." },
+  { id: "pinterest", label: "Pinterest",          note: "Boards and pins: palettes, rooms, textures, type." },
+  { id: "reads",     label: "Reads",              note: "Articles, posts, and docs to come back to." },
+  { id: "watch",     label: "Watch",              note: "Videos and talks worth the minutes." },
+  { id: "tools",     label: "Tools and Assets",   note: "Generators, libraries, fonts, and kits a future project could use." },
+  { id: "design",    label: "Design References",  note: "Techniques and pages to steal manners from." }
+];
+
+var RESOURCES = [
+  {
+    cat: "design",
+    title: "Arlan's Vault",
+    url: "https://www.arlan.me/vault",
+    note: "Design experiments (pixel effects, holo, liquid UI, kinetic type, ASCII). MIT licensed, free to copy. The standing first stop before a new prototype page.",
+    art: "~  ~ >< ~\n  *  ~  ><",
+    color: "#7FB8D9",
+    tags: "arlan vault design experiments prototype"
+  },
+  {
+    cat: "design",
+    title: "DOS-AGE, by MEK.txt",
+    url: "https://mektxt.com/works/dos-age-game",
+    note: "DOS glyph pixel art drawn tile by tile, roguelike structure, daily challenge loop. The standing reference when drafting app and pixel-design prompts; MEK.type fonts (incl. Dosage) are mostly CC0.",
+    art: "[##]--[##]\n | DOS-AGE |",
+    color: "#E8873A",
+    tags: "mek dos-age pixel fonts dosage prompt reference"
+  }
+];
+
+(function () {
+  var sectionsEl = document.getElementById("sections");
+  var statsEl = document.getElementById("stats");
+  var searchEl = document.getElementById("fpSearch");
+  var clearEl = document.getElementById("searchClear");
+
+  function hostOf(url) {
+    try { return new URL(url).hostname.replace(/^www\./, ""); } catch (e) { return ""; }
+  }
+
+  function render(filter) {
+    var q = (filter || "").trim().toLowerCase();
+    var totalShown = 0;
+    sectionsEl.innerHTML = "";
+    CATEGORIES.forEach(function (cat) {
+      var items = RESOURCES.filter(function (r) {
+        if (r.cat !== cat.id) return false;
+        if (!q) return true;
+        var hay = (r.title + " " + r.note + " " + r.tags + " " + hostOf(r.url) + " " + cat.label).toLowerCase();
+        return hay.indexOf(q) !== -1;
+      });
+      if (q && items.length === 0) return;
+      var head = document.createElement("div");
+      head.className = "sec-label";
+      head.innerHTML = "<span>" + cat.label + "</span><span class=\"count\">" + items.length + "</span>";
+      sectionsEl.appendChild(head);
+      var note = document.createElement("p");
+      note.className = "sec-note";
+      note.textContent = cat.note;
+      sectionsEl.appendChild(note);
+      if (items.length === 0) {
+        var empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "Nothing filed yet. Send a link and it lands here.";
+        sectionsEl.appendChild(empty);
+        return;
+      }
+      var grid = document.createElement("div");
+      grid.className = "grid";
+      items.forEach(function (r) {
+        totalShown++;
+        var a = document.createElement("a");
+        a.className = "rcard";
+        a.href = r.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.innerHTML =
+          "<div class=\"art\" style=\"color:" + r.color + "\"></div>" +
+          "<div class=\"body\">" +
+            "<div class=\"name\"></div>" +
+            "<p class=\"note\"></p>" +
+            "<div class=\"meta\"><span class=\"host\"></span><span class=\"go\">Open &rarr;</span></div>" +
+          "</div>";
+        a.querySelector(".art").textContent = r.art;
+        a.querySelector(".name").textContent = r.title;
+        a.querySelector(".note").textContent = r.note;
+        a.querySelector(".host").textContent = hostOf(r.url);
+        grid.appendChild(a);
+      });
+      sectionsEl.appendChild(grid);
+    });
+    if (q && totalShown === 0) {
+      var none = document.createElement("div");
+      none.className = "empty";
+      none.textContent = "Nothing matches that search yet.";
+      sectionsEl.appendChild(none);
+    }
+    var cats = CATEGORIES.filter(function (c) {
+      return RESOURCES.some(function (r) { return r.cat === c.id; });
+    }).length;
+    statsEl.innerHTML = "<b>" + RESOURCES.length + "</b> Resources<span class=\"sep\">&middot;</span><b>" +
+      CATEGORIES.length + "</b> Shelves<span class=\"sep\">&middot;</span><b>" + cats + "</b> Started";
+  }
+
+  searchEl.addEventListener("input", function () {
+    clearEl.hidden = !searchEl.value;
+    render(searchEl.value);
+  });
+  clearEl.addEventListener("click", function () {
+    searchEl.value = "";
+    clearEl.hidden = true;
+    render("");
+    searchEl.focus();
+  });
+  searchEl.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { clearEl.click(); }
+  });
+
+  render("");
+})();
+</script>
+</body>
+</html>
