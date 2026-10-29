@@ -197,6 +197,33 @@
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
     overflow: hidden; min-height: 36px;
   }
+  /* Motion and glow pass: hero rise-in, breathing wave, scroll reveal, cursor glow + tilt */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    main > h1 { animation: rise .7s ease both; }
+    .sub { animation: rise .7s ease .08s both; }
+    .stats { animation: rise .7s ease .16s both; }
+    .searchbar { animation: rise .7s ease .24s both; }
+    nav { animation: rise .7s ease .32s both; }
+    @keyframes waveBreathe { 0%, 100% { opacity: .45; } 50% { opacity: .8; } }
+    .wave { animation: waveBreathe 7s ease-in-out infinite; }
+    @keyframes dotPulse { 0%, 100% { text-shadow: 0 0 0 rgba(232, 135, 58, 0); } 50% { text-shadow: 0 0 14px rgba(232, 135, 58, .55); } }
+    h1 .dot { animation: dotPulse 3.2s ease-in-out infinite; }
+    .rv { opacity: 0; transform: translateY(14px); }
+    .rv.in { opacity: 1; transform: none; transition: opacity .6s ease, transform .6s ease; }
+  }
+  a.pcard { position: relative; }
+  a.pcard::before {
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(162, 77, 255, .14), transparent 65%);
+    opacity: 0; transition: opacity .25s ease;
+  }
+  a.pcard:hover::before { opacity: 1; }
+  a.pcard:hover { box-shadow: 0 12px 32px rgba(0, 0, 0, .38); }
+  .prompt-card { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  .prompt-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 12px 32px rgba(0, 0, 0, .38); }
+  nav a:hover { box-shadow: 0 0 18px rgba(232, 135, 58, .18); }
+  details.section > summary:hover { color: var(--text); }
   footer { color: var(--faint); font-size: 12px; margin-top: 48px; }
 </style>
 </head>
@@ -1335,5 +1362,59 @@ document.querySelectorAll('[data-viewkey]').forEach(function (btn) {
 })();
 </script>
 
+<script>
+(function () {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var nums = document.querySelectorAll('.stats b');
+  if (!reduce && nums.length) {
+    nums.forEach(function (el) {
+      var target = parseInt(el.textContent, 10);
+      if (isNaN(target)) return;
+      var t0 = null, dur = 1000;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * e);
+        if (p < 1) requestAnimationFrame(step);
+      }
+      el.textContent = '0';
+      requestAnimationFrame(step);
+    });
+  }
+  var items = document.querySelectorAll('.pcard, .prompt-card, .sec-label');
+  if (!reduce && 'IntersectionObserver' in window && items.length) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        el.classList.add('in');
+        io.unobserve(el);
+        setTimeout(function () { el.classList.remove('rv', 'in'); el.style.transitionDelay = ''; }, 750);
+      });
+    }, { threshold: 0.12 });
+    items.forEach(function (el) {
+      var sib = Array.prototype.indexOf.call(el.parentNode.children, el);
+      el.style.transitionDelay = (Math.min(Math.max(sib, 0), 8) * 45) + 'ms';
+      el.classList.add('rv');
+      io.observe(el);
+    });
+  }
+  if (!reduce && window.matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll('a.pcard').forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        var r = card.getBoundingClientRect();
+        var x = e.clientX - r.left, y = e.clientY - r.top;
+        card.style.setProperty('--mx', x + 'px');
+        card.style.setProperty('--my', y + 'px');
+        var rx = ((y / r.height) - 0.5) * -3;
+        var ry = ((x / r.width) - 0.5) * 3;
+        card.style.transform = 'perspective(700px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateY(-2px)';
+      });
+      card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+    });
+  }
+})();
+</script>
 </body>
 </html>
