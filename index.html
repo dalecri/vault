@@ -148,8 +148,13 @@
   .prompt-card .copy { width: 100%; }
   .prompt-card .p-desc {
     font-size: 11px; line-height: 1.55; color: var(--muted); margin-bottom: 10px;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;
     overflow: hidden; min-height: 51px;
+  }
+  /* Prompt cards run double width (two grid tracks + the gap) so their
+     descriptions read in full; only where the grid has 2+ columns. */
+  @media (min-width: 420px) {
+    .prompt-card { grid-column: span 2; }
   }
   .prompt-card .p-actions { display: flex; gap: 8px; width: 100%; margin-top: auto; }
   .prompt-card .p-actions .copy { flex: 1; width: auto; }
