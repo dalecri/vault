@@ -156,6 +156,13 @@
   @media (min-width: 420px) {
     .prompt-card { grid-column: span 2; }
   }
+  /* On desktop the prompt grid runs 6 tracks instead, so the double-width
+     cards sit three to a row and rows fill evenly. Kicks in wherever the
+     base auto-fill would otherwise give 5 tracks (container 790px and up,
+     i.e. an 830px viewport with the body's side padding). */
+  @media (min-width: 830px) {
+    .pgrid { grid-template-columns: repeat(6, 1fr); }
+  }
   .prompt-card .p-actions { display: flex; gap: 8px; width: 100%; margin-top: auto; }
   .prompt-card .p-actions .copy { flex: 1; width: auto; }
   body.modal-open { overflow: hidden; }
