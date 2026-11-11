@@ -60,6 +60,18 @@
     transition: border-color .15s ease, color .15s ease, transform .15s ease;
   }
   nav a:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
+  .qlinks {
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start;
+  }
+  .qlinks a {
+    font-family: 'Alpha Lyrae', 'Space Mono', monospace;
+    display: inline-block; padding: 13px 26px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--panel);
+    color: var(--chip); text-decoration: none;
+    font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase;
+    transition: border-color .15s ease, color .15s ease, transform .15s ease;
+  }
+  .qlinks a:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
   .sec-label {
     margin: 56px 0 18px; font-size: 12px; letter-spacing: 0.22em;
     text-transform: uppercase; color: var(--muted); text-align: left;
@@ -261,7 +273,7 @@
   a.pcard:hover { box-shadow: 0 12px 32px rgba(0, 0, 0, .38); }
   .prompt-card { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
   .prompt-card:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 12px 32px rgba(0, 0, 0, .38); }
-  nav a:hover { box-shadow: 0 0 18px rgba(232, 135, 58, .18); }
+  nav a:hover, .qlinks a:hover { box-shadow: 0 0 18px rgba(232, 135, 58, .18); }
   details.section > summary:hover { color: var(--text); }
   footer { color: var(--faint); font-size: 12px; margin-top: 48px; }
 </style>
@@ -303,6 +315,20 @@
     <a href="https://dalecri.github.io/family-tree/">Family Tree</a>
     <a href="https://heycristobal.com/vault/future-projects/">Future Projects</a>
   </nav>
+
+
+  <details class="section" open>
+    <summary><span>Quick Links</span><span class="chev">&#9662;</span></summary>
+    <div class="qlinks">
+      <a class="qlink" href="https://heycristobal.com/cristobal-builds/">Cristobal Builds</a>
+      <a class="qlink" href="https://itsrito.com/">itsrito</a>
+      <a class="qlink" href="https://heycristobal.com/landing-templates/mark-blog/">Mark's Essays</a>
+      <a class="qlink" href="https://holaelena.com/">Hola Elena</a>
+      <a class="qlink" href="https://dalecri.github.io/family-tree/">Family Tree</a>
+      <a class="qlink" href="https://heycristobal.com/dalenzo/">Dalenzo</a>
+    </div>
+  </details>
+
 
 
   <details class="section" open>
@@ -1458,7 +1484,7 @@ pmCopy.addEventListener('click', function () {
     nav.style.display = pills.some(function (p) { return p.style.display !== 'none'; }) ? '' : 'none';
 
     sections.forEach(function (sec) {
-      var cards = sec.querySelectorAll('a.pcard, .prompt-card');
+      var cards = sec.querySelectorAll('a.pcard, .prompt-card, a.qlink');
       var visible = 0;
       cards.forEach(function (card) {
         var show = !q || cardText(card).indexOf(q) !== -1;
